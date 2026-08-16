@@ -93,6 +93,8 @@ scripts/verify-layout.ps1       # self-consistency of an installed replica
 deploy/run-acceptance.ps1       # end-to-end AF2-Multimer acceptance
 ```
 
+Release history and user-facing update notices: [CHANGELOG.md](CHANGELOG.md).
+
 ## License
 
 Repository code: MIT ([LICENSE](LICENSE)). Backend toolchain licensing —
