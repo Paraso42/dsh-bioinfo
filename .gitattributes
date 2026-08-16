@@ -1,0 +1,5 @@
+# Normalize line endings; keep POSIX shell scripts LF even on Windows
+# (WSL bash rejects CRLF), and PowerShell scripts CRLF.
+* text=auto
+*.sh text eol=lf
+*.ps1 text eol=crlf
