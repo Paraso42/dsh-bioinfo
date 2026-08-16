@@ -46,7 +46,13 @@ plugins\
 skills\
 ```
 
-然后启动 DSH,新会话选择「生信模式」。预设文件在会话启动时加载,改完重启会话生效。
+然后启动 DSH,新会话选择「生信模式」。
+
+> **运维纪律(必读)**:预设组合(`agent.cordis.yml`、`plugins/`、`skills/`)在
+> **DSH 宿主进程启动时只挂载一次**,之后修改任何预设文件都必须**重启宿主进程**
+> (仅新开会话不会重载,内存中仍是旧版本)。典型症状:生信模式会话开场即报
+> `Invalid schema for function 'af2_predict' ... got 'type: null'`——磁盘已是
+> 修复版但进程未重启。
 
 ## 3. Python 3.13 + Biopython 1.87
 

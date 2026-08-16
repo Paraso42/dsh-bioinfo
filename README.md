@@ -34,6 +34,11 @@ reference machine.
 4. **Prove the replica** — run `deploy/run-acceptance.ps1` and
    `scripts/verify-layout.ps1`; compare against the reference values in
    [`fixtures/README.md`](fixtures/README.md).
+5. **Remember the restart rule** — the preset composition is mounted once per
+   DSH host process. After editing any preset file (`agent.cordis.yml`,
+   `plugins/`, `skills/`), restart the DSH host; a new session alone is not
+   enough (symptom: `Invalid schema ... got 'type: null'` at conversation
+   start while the on-disk file is already fixed).
 
 The reference layout below is part of the contract: a user deploying exactly
 per `docs/INSTALL.md` gets an identical preset with zero file edits. Every
