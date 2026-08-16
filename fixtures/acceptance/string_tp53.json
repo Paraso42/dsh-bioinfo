@@ -1,0 +1,162 @@
+[
+  {
+    "protein_a": "SIRT1",
+    "protein_b": "EP300",
+    "score": 0.972,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "SIRT1",
+    "protein_b": "TP53",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "RPA1",
+    "protein_b": "ATM",
+    "score": 0.928,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "RPA1",
+    "protein_b": "TP53",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "CREBBP",
+    "score": 0.909,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "HSP90AA1",
+    "score": 0.909,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "SFN",
+    "score": 0.989,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "ATM",
+    "score": 0.995,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "DAXX",
+    "score": 0.995,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "EP300",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "MDM2",
+    "protein_b": "TP53",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "CREBBP",
+    "protein_b": "TP53",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "CREBBP",
+    "protein_b": "EP300",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "EP300",
+    "protein_b": "ATM",
+    "score": 0.904,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "EP300",
+    "protein_b": "TP53",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "DAXX",
+    "protein_b": "TP53",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "TP53",
+    "protein_b": "SFN",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "TP53",
+    "protein_b": "HSP90AA1",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "TP53",
+    "protein_b": "ATM",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  },
+  {
+    "protein_a": "TP53",
+    "protein_b": "TP53BP2",
+    "score": 0.999,
+    "experiments": null,
+    "database": null,
+    "textmining": null
+  }
+]

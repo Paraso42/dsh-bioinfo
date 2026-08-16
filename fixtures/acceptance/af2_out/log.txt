@@ -1,0 +1,14 @@
+2026-08-15 22:53:24,951 Running colabfold 1.5.5
+2026-08-15 22:53:25,431 Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+2026-08-15 22:53:25,433 Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+2026-08-15 22:53:27,131 Running on GPU
+2026-08-15 22:53:27,226 Found 2 citations for tools or databases
+2026-08-15 22:53:27,231 Query 1/1: barnase_barstar (length 200)
+2026-08-15 22:54:25,811 alphafold2_multimer_v3_model_1_seed_000 recycle=0 pLDDT=32.5 pTM=0.182 ipTM=0.0702
+2026-08-15 22:54:26,876 alphafold2_multimer_v3_model_1_seed_000 recycle=1 pLDDT=33.2 pTM=0.184 ipTM=0.076 tol=7.21
+2026-08-15 22:54:27,937 alphafold2_multimer_v3_model_1_seed_000 recycle=2 pLDDT=35.7 pTM=0.203 ipTM=0.0729 tol=2.94
+2026-08-15 22:54:28,996 alphafold2_multimer_v3_model_1_seed_000 recycle=3 pLDDT=36 pTM=0.211 ipTM=0.0796 tol=3.11
+2026-08-15 22:54:28,998 alphafold2_multimer_v3_model_1_seed_000 took 28.9s (3 recycles)
+2026-08-15 22:54:29,136 reranking models by 'multimer' metric
+2026-08-15 22:54:29,137 rank_001_alphafold2_multimer_v3_model_1_seed_000 pLDDT=36 pTM=0.211 ipTM=0.0796
+2026-08-15 22:54:29,524 Done

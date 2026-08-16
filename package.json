@@ -1,0 +1,10 @@
+{
+  "name": "dsh-bioinfo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Protein structure prediction & interaction tools for DeepSeek Harness (DSH) agent presets",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --check plugins/protein-tools.js && node validate-plugin-schemas.js"
+  }
+}

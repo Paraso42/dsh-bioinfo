@@ -1,0 +1,3 @@
+name: 生信模式
+description: 生物信息学分析 Agent：具备标准模式的全部能力，并内置 Biopython 1.87 环境引导与生信分析技能（序列处理、比对、进化树、蛋白质结构、BLAST/Entrez 等），可直接调用本机 D:\biopython 标准生信代码库完成分析。
+order: 10

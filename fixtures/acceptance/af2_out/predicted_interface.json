@@ -1,0 +1,1568 @@
+{
+  "complex": "D:\\bioai\\jobs\\acceptance\\af2_out\\barnase_barstar_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+  "chains": [
+    "A",
+    "B"
+  ],
+  "cutoff_angstrom": 5.0,
+  "n_contacts": 73,
+  "contacts": [
+    {
+      "a": {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 84,
+        "resname": "ASP"
+      },
+      "dist": 0.22
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 100,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 0.27
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 105,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 0.57
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 0.75
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 0.84
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 54,
+        "resname": "TRP"
+      },
+      "dist": 1.27
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 83,
+        "resname": "CYS"
+      },
+      "dist": 1.36
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 65,
+        "resname": "GLY"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 47,
+        "resname": "GLU"
+      },
+      "dist": 1.47
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 1.48
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 102,
+        "resname": "HIS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 1.58
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      "dist": 1.69
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 102,
+        "resname": "HIS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      "dist": 1.75
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 66,
+        "resname": "LYS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 47,
+        "resname": "GLU"
+      },
+      "dist": 1.86
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      "dist": 1.91
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      "dist": 1.95
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 1.96
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 94,
+        "resname": "TRP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 48,
+        "resname": "TYR"
+      },
+      "dist": 1.96
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 105,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 86,
+        "resname": "THR"
+      },
+      "dist": 2.08
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 102,
+        "resname": "HIS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 2.21
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 96,
+        "resname": "ILE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      "dist": 2.31
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 82,
+        "resname": "GLY"
+      },
+      "dist": 2.34
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 83,
+        "resname": "ARG"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 56,
+        "resname": "GLN"
+      },
+      "dist": 2.43
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 90,
+        "resname": "SER"
+      },
+      "dist": 2.45
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 56,
+        "resname": "GLN"
+      },
+      "dist": 2.49
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 99,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 2.6
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 21,
+        "resname": "PRO"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 84,
+        "resname": "ASP"
+      },
+      "dist": 2.63
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 89,
+        "resname": "LEU"
+      },
+      "dist": 2.72
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 50,
+        "resname": "LEU"
+      },
+      "dist": 2.91
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      "dist": 2.93
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 85,
+        "resname": "SER"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 2.95
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 50,
+        "resname": "LEU"
+      },
+      "dist": 2.97
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 64,
+        "resname": "PRO"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 47,
+        "resname": "GLU"
+      },
+      "dist": 3.2
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 102,
+        "resname": "HIS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 54,
+        "resname": "TRP"
+      },
+      "dist": 3.21
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 20,
+        "resname": "LEU"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 84,
+        "resname": "ASP"
+      },
+      "dist": 3.24
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 48,
+        "resname": "TYR"
+      },
+      "dist": 3.31
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 87,
+        "resname": "ILE"
+      },
+      "dist": 3.33
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 85,
+        "resname": "ILE"
+      },
+      "dist": 3.45
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 67,
+        "resname": "SER"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 47,
+        "resname": "GLU"
+      },
+      "dist": 3.46
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 96,
+        "resname": "ILE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 3.47
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 3.54
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 63,
+        "resname": "LEU"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      "dist": 3.6
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 86,
+        "resname": "THR"
+      },
+      "dist": 3.61
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 3.63
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 98,
+        "resname": "LYS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 3.65
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 97,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 3.66
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 55,
+        "resname": "ARG"
+      },
+      "dist": 3.72
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 89,
+        "resname": "LEU"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      "dist": 4.04
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 90,
+        "resname": "SER"
+      },
+      "dist": 4.09
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 99,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 4.11
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 102,
+        "resname": "HIS"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 57,
+        "resname": "PHE"
+      },
+      "dist": 4.13
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 100,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 55,
+        "resname": "ARG"
+      },
+      "dist": 4.35
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 100,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 54,
+        "resname": "TRP"
+      },
+      "dist": 4.42
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 99,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      "dist": 4.44
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 86,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      "dist": 4.46
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 4.47
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 4.47
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 71,
+        "resname": "TRP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      "dist": 4.57
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 87,
+        "resname": "ILE"
+      },
+      "dist": 4.59
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 96,
+        "resname": "ILE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 90,
+        "resname": "SER"
+      },
+      "dist": 4.6
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 57,
+        "resname": "PHE"
+      },
+      "dist": 4.61
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 78,
+        "resname": "ALA"
+      },
+      "dist": 4.66
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 100,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      "dist": 4.7
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 89,
+        "resname": "LEU"
+      },
+      "dist": 4.7
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 105,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 87,
+        "resname": "ILE"
+      },
+      "dist": 4.72
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 63,
+        "resname": "LEU"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 4.77
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 100,
+        "resname": "THR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 56,
+        "resname": "GLN"
+      },
+      "dist": 4.82
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 79,
+        "resname": "LYS"
+      },
+      "dist": 4.82
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 63,
+        "resname": "LEU"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 47,
+        "resname": "GLU"
+      },
+      "dist": 4.87
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 96,
+        "resname": "ILE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 48,
+        "resname": "TYR"
+      },
+      "dist": 4.9
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      "dist": 4.92
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 23,
+        "resname": "ASN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 82,
+        "resname": "GLY"
+      },
+      "dist": 4.93
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      "dist": 4.96
+    },
+    {
+      "a": {
+        "chain": "A",
+        "resid": 95,
+        "resname": "LEU"
+      },
+      "b": {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      "dist": 4.98
+    }
+  ],
+  "n_contacts_truncated": false,
+  "interface_residues": {
+    "A": [
+      {
+        "chain": "A",
+        "resid": 20,
+        "resname": "LEU"
+      },
+      {
+        "chain": "A",
+        "resid": 21,
+        "resname": "PRO"
+      },
+      {
+        "chain": "A",
+        "resid": 23,
+        "resname": "ASN"
+      },
+      {
+        "chain": "A",
+        "resid": 24,
+        "resname": "TYR"
+      },
+      {
+        "chain": "A",
+        "resid": 63,
+        "resname": "LEU"
+      },
+      {
+        "chain": "A",
+        "resid": 64,
+        "resname": "PRO"
+      },
+      {
+        "chain": "A",
+        "resid": 65,
+        "resname": "GLY"
+      },
+      {
+        "chain": "A",
+        "resid": 66,
+        "resname": "LYS"
+      },
+      {
+        "chain": "A",
+        "resid": 67,
+        "resname": "SER"
+      },
+      {
+        "chain": "A",
+        "resid": 71,
+        "resname": "TRP"
+      },
+      {
+        "chain": "A",
+        "resid": 83,
+        "resname": "ARG"
+      },
+      {
+        "chain": "A",
+        "resid": 85,
+        "resname": "SER"
+      },
+      {
+        "chain": "A",
+        "resid": 86,
+        "resname": "ASP"
+      },
+      {
+        "chain": "A",
+        "resid": 89,
+        "resname": "LEU"
+      },
+      {
+        "chain": "A",
+        "resid": 94,
+        "resname": "TRP"
+      },
+      {
+        "chain": "A",
+        "resid": 95,
+        "resname": "LEU"
+      },
+      {
+        "chain": "A",
+        "resid": 96,
+        "resname": "ILE"
+      },
+      {
+        "chain": "A",
+        "resid": 97,
+        "resname": "TYR"
+      },
+      {
+        "chain": "A",
+        "resid": 98,
+        "resname": "LYS"
+      },
+      {
+        "chain": "A",
+        "resid": 99,
+        "resname": "THR"
+      },
+      {
+        "chain": "A",
+        "resid": 100,
+        "resname": "THR"
+      },
+      {
+        "chain": "A",
+        "resid": 101,
+        "resname": "ASP"
+      },
+      {
+        "chain": "A",
+        "resid": 102,
+        "resname": "HIS"
+      },
+      {
+        "chain": "A",
+        "resid": 103,
+        "resname": "TYR"
+      },
+      {
+        "chain": "A",
+        "resid": 104,
+        "resname": "GLN"
+      },
+      {
+        "chain": "A",
+        "resid": 105,
+        "resname": "THR"
+      },
+      {
+        "chain": "A",
+        "resid": 106,
+        "resname": "PHE"
+      }
+    ],
+    "B": [
+      {
+        "chain": "B",
+        "resid": 47,
+        "resname": "GLU"
+      },
+      {
+        "chain": "B",
+        "resid": 48,
+        "resname": "TYR"
+      },
+      {
+        "chain": "B",
+        "resid": 49,
+        "resname": "PRO"
+      },
+      {
+        "chain": "B",
+        "resid": 50,
+        "resname": "LEU"
+      },
+      {
+        "chain": "B",
+        "resid": 51,
+        "resname": "VAL"
+      },
+      {
+        "chain": "B",
+        "resid": 52,
+        "resname": "LEU"
+      },
+      {
+        "chain": "B",
+        "resid": 53,
+        "resname": "GLU"
+      },
+      {
+        "chain": "B",
+        "resid": 54,
+        "resname": "TRP"
+      },
+      {
+        "chain": "B",
+        "resid": 55,
+        "resname": "ARG"
+      },
+      {
+        "chain": "B",
+        "resid": 56,
+        "resname": "GLN"
+      },
+      {
+        "chain": "B",
+        "resid": 57,
+        "resname": "PHE"
+      },
+      {
+        "chain": "B",
+        "resid": 78,
+        "resname": "ALA"
+      },
+      {
+        "chain": "B",
+        "resid": 79,
+        "resname": "LYS"
+      },
+      {
+        "chain": "B",
+        "resid": 82,
+        "resname": "GLY"
+      },
+      {
+        "chain": "B",
+        "resid": 83,
+        "resname": "CYS"
+      },
+      {
+        "chain": "B",
+        "resid": 84,
+        "resname": "ASP"
+      },
+      {
+        "chain": "B",
+        "resid": 85,
+        "resname": "ILE"
+      },
+      {
+        "chain": "B",
+        "resid": 86,
+        "resname": "THR"
+      },
+      {
+        "chain": "B",
+        "resid": 87,
+        "resname": "ILE"
+      },
+      {
+        "chain": "B",
+        "resid": 88,
+        "resname": "ILE"
+      },
+      {
+        "chain": "B",
+        "resid": 89,
+        "resname": "LEU"
+      },
+      {
+        "chain": "B",
+        "resid": 90,
+        "resname": "SER"
+      }
+    ]
+  },
+  "bsa_total": 1624.47,
+  "bsa_min_threshold": 1.0,
+  "bsa_per_residue": [
+    {
+      "chain": "B",
+      "resid": 53,
+      "resname": "GLU",
+      "bsa": 142.14,
+      "sasa_isolated": 145.49,
+      "sasa_complex": 3.35
+    },
+    {
+      "chain": "A",
+      "resid": 24,
+      "resname": "TYR",
+      "bsa": 121.49,
+      "sasa_isolated": 169.45,
+      "sasa_complex": 47.96
+    },
+    {
+      "chain": "B",
+      "resid": 88,
+      "resname": "ILE",
+      "bsa": 117.32,
+      "sasa_isolated": 118.42,
+      "sasa_complex": 1.09
+    },
+    {
+      "chain": "B",
+      "resid": 84,
+      "resname": "ASP",
+      "bsa": 98.04,
+      "sasa_isolated": 148.8,
+      "sasa_complex": 50.77
+    },
+    {
+      "chain": "A",
+      "resid": 103,
+      "resname": "TYR",
+      "bsa": 91.68,
+      "sasa_isolated": 106.68,
+      "sasa_complex": 15.0
+    },
+    {
+      "chain": "B",
+      "resid": 47,
+      "resname": "GLU",
+      "bsa": 89.49,
+      "sasa_isolated": 175.62,
+      "sasa_complex": 86.13
+    },
+    {
+      "chain": "B",
+      "resid": 49,
+      "resname": "PRO",
+      "bsa": 84.52,
+      "sasa_isolated": 93.95,
+      "sasa_complex": 9.43
+    },
+    {
+      "chain": "B",
+      "resid": 48,
+      "resname": "TYR",
+      "bsa": 83.25,
+      "sasa_isolated": 122.54,
+      "sasa_complex": 39.29
+    },
+    {
+      "chain": "A",
+      "resid": 102,
+      "resname": "HIS",
+      "bsa": 82.78,
+      "sasa_isolated": 123.68,
+      "sasa_complex": 40.9
+    },
+    {
+      "chain": "A",
+      "resid": 101,
+      "resname": "ASP",
+      "bsa": 81.06,
+      "sasa_isolated": 96.06,
+      "sasa_complex": 15.0
+    },
+    {
+      "chain": "A",
+      "resid": 106,
+      "resname": "PHE",
+      "bsa": 76.56,
+      "sasa_isolated": 100.54,
+      "sasa_complex": 23.98
+    },
+    {
+      "chain": "B",
+      "resid": 51,
+      "resname": "VAL",
+      "bsa": 70.01,
+      "sasa_isolated": 121.94,
+      "sasa_complex": 51.93
+    },
+    {
+      "chain": "B",
+      "resid": 86,
+      "resname": "THR",
+      "bsa": 50.82,
+      "sasa_isolated": 112.82,
+      "sasa_complex": 62.0
+    },
+    {
+      "chain": "B",
+      "resid": 56,
+      "resname": "GLN",
+      "bsa": 48.32,
+      "sasa_isolated": 155.28,
+      "sasa_complex": 106.96
+    },
+    {
+      "chain": "B",
+      "resid": 52,
+      "resname": "LEU",
+      "bsa": 43.25,
+      "sasa_isolated": 114.75,
+      "sasa_complex": 71.5
+    },
+    {
+      "chain": "A",
+      "resid": 105,
+      "resname": "THR",
+      "bsa": 36.87,
+      "sasa_isolated": 65.29,
+      "sasa_complex": 28.42
+    },
+    {
+      "chain": "A",
+      "resid": 94,
+      "resname": "TRP",
+      "bsa": 35.02,
+      "sasa_isolated": 71.89,
+      "sasa_complex": 36.87
+    },
+    {
+      "chain": "A",
+      "resid": 104,
+      "resname": "GLN",
+      "bsa": 32.69,
+      "sasa_isolated": 114.77,
+      "sasa_complex": 82.08
+    },
+    {
+      "chain": "A",
+      "resid": 65,
+      "resname": "GLY",
+      "bsa": 31.4,
+      "sasa_isolated": 47.69,
+      "sasa_complex": 16.3
+    },
+    {
+      "chain": "B",
+      "resid": 82,
+      "resname": "GLY",
+      "bsa": 27.19,
+      "sasa_isolated": 56.57,
+      "sasa_complex": 29.37
+    },
+    {
+      "chain": "A",
+      "resid": 100,
+      "resname": "THR",
+      "bsa": 25.19,
+      "sasa_isolated": 70.24,
+      "sasa_complex": 45.05
+    },
+    {
+      "chain": "A",
+      "resid": 83,
+      "resname": "ARG",
+      "bsa": 22.97,
+      "sasa_isolated": 157.37,
+      "sasa_complex": 134.4
+    },
+    {
+      "chain": "A",
+      "resid": 63,
+      "resname": "LEU",
+      "bsa": 21.74,
+      "sasa_isolated": 48.56,
+      "sasa_complex": 26.82
+    },
+    {
+      "chain": "A",
+      "resid": 66,
+      "resname": "LYS",
+      "bsa": 15.13,
+      "sasa_isolated": 211.0,
+      "sasa_complex": 195.87
+    },
+    {
+      "chain": "A",
+      "resid": 20,
+      "resname": "LEU",
+      "bsa": 12.08,
+      "sasa_isolated": 63.19,
+      "sasa_complex": 51.11
+    },
+    {
+      "chain": "A",
+      "resid": 23,
+      "resname": "ASN",
+      "bsa": 11.33,
+      "sasa_isolated": 147.7,
+      "sasa_complex": 136.37
+    },
+    {
+      "chain": "B",
+      "resid": 83,
+      "resname": "CYS",
+      "bsa": 10.4,
+      "sasa_isolated": 59.52,
+      "sasa_complex": 49.12
+    },
+    {
+      "chain": "A",
+      "resid": 71,
+      "resname": "TRP",
+      "bsa": 8.45,
+      "sasa_isolated": 28.05,
+      "sasa_complex": 19.6
+    },
+    {
+      "chain": "B",
+      "resid": 57,
+      "resname": "PHE",
+      "bsa": 7.25,
+      "sasa_isolated": 33.59,
+      "sasa_complex": 26.34
+    },
+    {
+      "chain": "A",
+      "resid": 64,
+      "resname": "PRO",
+      "bsa": 6.43,
+      "sasa_isolated": 124.06,
+      "sasa_complex": 117.63
+    },
+    {
+      "chain": "A",
+      "resid": 21,
+      "resname": "PRO",
+      "bsa": 6.04,
+      "sasa_isolated": 72.32,
+      "sasa_complex": 66.28
+    },
+    {
+      "chain": "A",
+      "resid": 96,
+      "resname": "ILE",
+      "bsa": 4.83,
+      "sasa_isolated": 4.83,
+      "sasa_complex": 0.0
+    },
+    {
+      "chain": "A",
+      "resid": 98,
+      "resname": "LYS",
+      "bsa": 4.83,
+      "sasa_isolated": 47.53,
+      "sasa_complex": 42.7
+    },
+    {
+      "chain": "A",
+      "resid": 17,
+      "resname": "TYR",
+      "bsa": 4.42,
+      "sasa_isolated": 43.17,
+      "sasa_complex": 38.74
+    },
+    {
+      "chain": "B",
+      "resid": 54,
+      "resname": "TRP",
+      "bsa": 3.62,
+      "sasa_isolated": 100.64,
+      "sasa_complex": 97.02
+    },
+    {
+      "chain": "B",
+      "resid": 55,
+      "resname": "ARG",
+      "bsa": 3.62,
+      "sasa_isolated": 187.26,
+      "sasa_complex": 183.64
+    },
+    {
+      "chain": "B",
+      "resid": 79,
+      "resname": "LYS",
+      "bsa": 2.28,
+      "sasa_isolated": 84.49,
+      "sasa_complex": 82.22
+    },
+    {
+      "chain": "B",
+      "resid": 89,
+      "resname": "LEU",
+      "bsa": 2.17,
+      "sasa_isolated": 28.48,
+      "sasa_complex": 26.32
+    },
+    {
+      "chain": "B",
+      "resid": 87,
+      "resname": "ILE",
+      "bsa": 2.14,
+      "sasa_isolated": 71.4,
+      "sasa_complex": 69.26
+    },
+    {
+      "chain": "A",
+      "resid": 89,
+      "resname": "LEU",
+      "bsa": 1.21,
+      "sasa_isolated": 12.08,
+      "sasa_complex": 10.87
+    },
+    {
+      "chain": "B",
+      "resid": 50,
+      "resname": "LEU",
+      "bsa": 1.21,
+      "sasa_isolated": 45.99,
+      "sasa_complex": 44.78
+    },
+    {
+      "chain": "A",
+      "resid": 67,
+      "resname": "SER",
+      "bsa": 1.09,
+      "sasa_isolated": 61.74,
+      "sasa_complex": 60.64
+    },
+    {
+      "chain": "A",
+      "resid": 99,
+      "resname": "THR",
+      "bsa": 1.07,
+      "sasa_isolated": 18.23,
+      "sasa_complex": 17.16
+    },
+    {
+      "chain": "B",
+      "resid": 81,
+      "resname": "GLU",
+      "bsa": 1.07,
+      "sasa_isolated": 146.32,
+      "sasa_complex": 145.25
+    }
+  ]
+}

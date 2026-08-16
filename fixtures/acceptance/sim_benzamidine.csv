@@ -1,0 +1,8 @@
+rank,id,smiles,tanimoto
+1,benzamidine,N=C(N)c1ccccc1,1.0
+2,phenol,Oc1ccccc1,0.35
+3,toluene,Cc1ccccc1,0.2857
+4,aspirin,CC(=O)Oc1ccccc1C(=O)O,0.2121
+5,benzene,c1ccccc1,0.1875
+6,ibuprofen,CC(C)Cc1ccc(C(C)C(=O)O)cc1,0.1389
+7,acetaminophen,CC(=O)Nc1ccc(O)cc1,0.125

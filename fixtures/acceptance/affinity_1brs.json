@@ -1,0 +1,12 @@
+{
+  "mode": "protein-protein",
+  "complex": "D:\\bioai\\jobs\\acceptance\\1brs_AD_complex.pdb",
+  "chains": [
+    "A",
+    "D"
+  ],
+  "dg_kcal_mol": -11.3,
+  "kd_M": 5e-09,
+  "temperature_C": 25.0,
+  "raw": "[!] Structure contains gaps:\n\tA VAL3 < Fragment 0 > A ARG110\n\tD LYS1 < Fragment 1 > D THR63\n\tD GLY66 < Fragment 2 > D SER89\n\n[+] Executing 1 task(s) in total\n##########################################\n[+] Processing structure 1brs_AD_complex_model0\n[+] No. of intermolecular contacts: 68\n[+] No. of charged-charged contacts: 11.0\n[+] No. of charged-polar contacts: 12.0\n[+] No. of charged-apolar contacts: 25.0\n[+] No. of polar-polar contacts: 2.0\n[+] No. of apolar-polar contacts: 11.0\n[+] No. of apolar-apolar contacts: 7.0\n[+] Percentage of apolar NIS residues: 31.91\n[+] Percentage of charged NIS residues: 31.21\n[++] Predicted binding affinity (kcal.mol-1):    -11.3\n[++] Predicted dissociation constant (M) at 25.0˚C:  5.0e-09"
+}

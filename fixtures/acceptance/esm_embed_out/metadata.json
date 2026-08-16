@@ -1,0 +1,36 @@
+{
+  "model": "esm2_t6_8M_UR50D",
+  "mean_pool": true,
+  "records": [
+    {
+      "id": "barnase_barstar_chain1",
+      "seq_len": 110,
+      "layers": {
+        "6": {
+          "layer": 6,
+          "residue_npy": "barnase_barstar_chain1_residue_L6.npy",
+          "shape": [
+            110,
+            320
+          ],
+          "sequence_npy": "barnase_barstar_chain1_sequence_L6.npy"
+        }
+      }
+    },
+    {
+      "id": "barnase_barstar_chain2",
+      "seq_len": 90,
+      "layers": {
+        "6": {
+          "layer": 6,
+          "residue_npy": "barnase_barstar_chain2_residue_L6.npy",
+          "shape": [
+            90,
+            320
+          ],
+          "sequence_npy": "barnase_barstar_chain2_sequence_L6.npy"
+        }
+      }
+    }
+  ]
+}

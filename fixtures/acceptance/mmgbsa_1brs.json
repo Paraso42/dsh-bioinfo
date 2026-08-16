@@ -1,0 +1,36 @@
+{
+  "mode": "mm-gbsa (OBC2 implicit)",
+  "complex": "D:\\bioai\\jobs\\acceptance\\1brs_AD_complex.pdb",
+  "rec_chains": [
+    "A"
+  ],
+  "lig_chains": [
+    "D"
+  ],
+  "platform": "CPU",
+  "e_complex_kcal": {
+    "total": -7199.48,
+    "internal": 111.4,
+    "nonbonded": -7310.88
+  },
+  "e_receptor_kcal": {
+    "total": -3956.96,
+    "internal": 196.2,
+    "nonbonded": -4153.16
+  },
+  "e_ligand_kcal": {
+    "total": -3205.79,
+    "internal": -574.64,
+    "nonbonded": -2631.15
+  },
+  "n_atoms": {
+    "complex": 3042,
+    "receptor": 1700,
+    "ligand": 1342
+  },
+  "dg_bind_kcal_mol": -36.73,
+  "dg_internal_kcal_mol": 489.84,
+  "dg_nonbonded_kcal_mol": -526.57,
+  "elapsed_s": 1072.5,
+  "note": "implicit-solvent single-point energies; absolute values over-stabilize — use for ranking/comparison, not absolute dG"
+}
