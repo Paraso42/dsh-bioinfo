@@ -262,6 +262,25 @@ an.print_as("map")                   # 打印酶切图谱
 # 引物/序列设计辅助：Bio.SeqUtils.nt_search 找简并位点
 ```
 
+### 引物设计要点（Tm 计算 + 酶切位点冲突检测，2026-08 实测）
+
+```python
+from Bio.Seq import Seq
+from Bio.SeqUtils.MeltingTemp import Tm_NN   # 引物 Tm 计算模块（本次实测靠此模块）
+from Bio.Restriction import EcoRI, BamHI, Analysis, RestrictionBatch
+
+anneal = Seq("ATGGCGTCTAAGTGG...")                     # 退火区
+tm = Tm_NN(anneal, Na=50, K=0, Tris=0, Mg=2, dNTPs=0.2)   # float ℃
+# 常用参数：Na=50（mM 单价阳离子）、dNTPs=0.2（mM）；默认即对 DNA 引物适用
+
+# 酶切位点内部冲突检测：在候选退火区上批量搜索所用酶的识别位点
+rb = RestrictionBatch([EcoRI, BamHI])
+an = Analysis(rb, anneal)
+print(an.full())   # 有命中 = 内部冲突 → 换退火区起点或换同尾酶
+```
+- 退火区 Tm 自动选长：以 Tm≈58–62 ℃ 为目标前后滑动起点；两端引物 Tm 差控制在 2 ℃ 内
+- 翻译注意：`.translate()` 只作用于 `Seq` 对象，对 Python `str` 调用会报 `TypeError`（见速查表）
+
 ## 七、模体（motif）分析：Bio.motifs
 
 ```python
@@ -350,6 +369,7 @@ gd.write("genome.pdf", "PDF")   # 本机实测：PDF/EPS 正常；PNG 会报 Ren
 | `RemoteDisconnected: Remote end closed connection without response`（qblast / urllib POST BLAST） | NCBI BLAST 服务端拒非浏览器 UA；改用第四节浏览器 UA URLAPI 方案（`resources/ncbi_blast.py`），带重试 |
 | `AttributeError: 'Hit' object has no attribute 'evalue'` | SearchIO 1.87 中 evalue/bitscore 在 `hsp` 上（`hit[0].evalue`）；identity 用 `hsp.ident_num / hsp.aln_span` |
 | ftp.ncbi.nlm.nih.gov 下载极慢/中断 | NCBI FTP 带宽整形（~1 KB/s 级）；改走 Datasets API 或 Entrez `seq_start`/`seq_stop` 分段 efetch |
+| `TypeError: ... 'str' object has no attribute 'translate'`（对 str 调 `.translate`） | `.translate(to_stop=True)` 只作用于 `Bio.Seq.Seq` 对象（1.87 实测踩到）；先 `Seq("ATG...")` 再翻译 |
 
 ## 十二、什么时候用这个 skill
 

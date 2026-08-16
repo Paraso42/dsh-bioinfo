@@ -3,6 +3,7 @@ r"""pdb_fetch.py — RCSB PDB REST 客户端(元数据 / 结构下载 / 序列 /
 
 子命令:
   meta      pdb_fetch.py meta 1yph --json meta.json
+            (含逐链聚合物残基数 chain_residues_polymer,来自结构文件 ATOM 计数)
   download  pdb_fetch.py download 1yph --format pdb --out 1yph.pdb   (或 --format cif)
   fasta     pdb_fetch.py fasta 1yph --out 1yph.fasta
   search    pdb_fetch.py search '{"query":{"type":"terminal","service":"text",
@@ -64,30 +65,41 @@ def _post_json(url, payload, retries=3, timeout=120):
     raise RuntimeError("search giving up")
 
 
-def _parse_chains_ligands_from_pdb(text):
-    """从 PDB 文本提取链 ID 与非聚合物配体(供 meta 兜底)。"""
-    chains, ligs = set(), set()
+def _parse_chain_stats_from_pdb(text):
+    """从 PDB 文本提取:链 ID、非聚合配体、逐链聚合物残基数。
+
+    残基计数只统计 ATOM 记录(标准聚合物残基;结晶水/配体为 HETATM 不计数),
+    按 (chain, resseq, icode) 去重,只取第一个 MODEL(ENDMDL 即停)。
+    """
+    chains, ligs, resmap = set(), set(), {}
     for line in text.splitlines():
+        if line.startswith("ENDMDL"):
+            break
         if line.startswith("ATOM  "):
-            chains.add(line[21:22].strip())
+            c = line[21:22].strip()
+            chains.add(c)
+            resmap.setdefault(c, set()).add((line[22:27].strip(), line[26:27]))
         elif line.startswith("HETATM"):
             res = line[17:20].strip()
             if res not in ("HOH", "WAT"):
                 ligs.add(res)
             chains.add(line[21:22].strip())
-    return sorted(c for c in chains if c), sorted(ligs)
+    return (sorted(c for c in chains if c), sorted(ligs),
+            {c: len(keys) for c, keys in sorted(resmap.items())})
 
 
 def fetch_metadata(pid):
     meta = json.loads(_get(DATA + "/core/entry/" + urllib.parse.quote(pid)))
     summary = _meta_summary(meta)
-    if not summary["chains"]:
-        try:
-            text = download_structure(pid, fmt="pdb")
-            summary["chains"], summary["ligands"] = _parse_chains_ligands_from_pdb(text)
-            summary["source"] = "core/entry + structure file"
-        except Exception:
-            summary["source"] = "core/entry"
+    try:
+        text = download_structure(pid, fmt="pdb")
+        chains, ligs, rescounts = _parse_chain_stats_from_pdb(text)
+        if not summary["chains"]:
+            summary["chains"], summary["ligands"] = chains, ligs
+        summary["chain_residues_polymer"] = rescounts
+        summary["source"] = "core/entry + structure file"
+    except Exception:
+        summary["source"] = "core/entry" if summary["chains"] else "core/entry (chains unknown)"
     return summary
 
 

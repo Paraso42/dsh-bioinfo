@@ -21,7 +21,11 @@ $ErrorActionPreference = 'Stop'
 
 if (-not (Test-Path -LiteralPath $Fasta)) { Write-Error "fasta not found: $Fasta"; exit 1 }
 
-$distros = @((wsl -l -q 2>$null | Out-String).Trim() -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -and $_ -notmatch '^\x00' })
+# NOTE: `wsl -l -q` output can be re-encoded as UTF-16, leaking NUL bytes into
+# the distro name (U\0b\0u\0n\0t\0u\0) -> wsl -d fails with
+# WSL_E_DISTRO_NOT_FOUND. Strip NUL before splitting; do NOT rely on a
+# '^\x00' line filter alone (embedded NULs survive it).
+$distros = @(((wsl -l -q 2>$null | Out-String) -replace "\u0000", "").Trim() -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $distro = $distros | Select-Object -First 1
 if (-not $distro) {
     Write-Error @"

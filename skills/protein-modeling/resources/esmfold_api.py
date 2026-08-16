@@ -46,7 +46,11 @@ def fold_sequence(sequence, url=DEFAULT_URL, timeout=240, retries=4, quiet=False
                 print("[attempt %d/%d] %s" % (attempt, retries, e), file=sys.stderr)
             if attempt < retries:
                 time.sleep(min(20 * attempt, 120))
-    raise RuntimeError("ESM Atlas API failed after %d attempts: %s" % (retries, last))
+    raise RuntimeError(
+        "ESM Atlas API failed after %d attempts: %s. "
+        "NOTE: the Atlas has been intermittently unavailable (repeated HTTP 504). "
+        "Local fallback (offline, GPU): run_colabfold.ps1 -MsaMode single_sequence "
+        "(see protein-modeling skill / af2_predict tool)" % (retries, last))
 
 
 def read_fasta(path):

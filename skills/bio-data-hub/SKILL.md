@@ -24,6 +24,7 @@ $U = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\bio-data-hub\resour
 ```
 
 - 查询语法自动纠错:`organism:` → `organism_id:`(taxonomy id);其他 Solr 字段照写
+- **按物种名检索用 `organism_name:`**(如 `organism_name:"Riccia fluitans"`);**经 PowerShell 传参时整段查询用单引号包裹**(内部双引号保留):`$U search 'organism_name:"Riccia fluitans" AND reviewed:true' ...` —— 用双引号嵌套会导致参数碎裂(`unrecognized arguments: fluitans`)
 - `--format list` 只出 accession 列表(便于管道);`--format json` 全量
 - 429/5xx 自动指数退避重试(最多 5 次)
 
@@ -39,6 +40,7 @@ $P = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\bio-data-hub\resour
 ```
 
 - meta 的链/配体信息:core/entry 端点无链数据时自动从结构文件解析兜底(`source` 字段标注)
+- meta 输出含 **`chain_residues_polymer`**:逐链聚合物残基数(结构文件 ATOM 计数、去结晶水,只取第一个 MODEL)——大/小亚基一眼分辨(如 8RUC:783 vs 207)
 - search 接受 RCSB 查询 JSON 对象或 `@file.json`
 
 ## 三、string_fetch.py — STRING-DB(互作网络)
@@ -51,6 +53,7 @@ $S = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\bio-data-hub\resour
 ```
 
 - network 输出:partner A/B、综合 score、experiments/database/textmining 分项
+- **计数与显示名 caveat**:打印的 `partners: N` 是 `--limit`(默认 50)截断后的实际行数,**不是**该节点的全部互作数;`preferredName` 可能是 STRING 的怪异别名(如 P10896 显示 `MTI20.21` ≠ 蛋白名)——**以 map 的映射行为准,显示名仅供参考**
 - map 逐 ID 请求(v12 端点不接受多行 ID)并自动限速 1s
 - 注意:跨物种查询会返回空结果(如鸡 P00698 查 9606),先确认 taxonomy
 
@@ -76,4 +79,6 @@ $K = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\bio-data-hub\resour
 | STRING map 空结果 | 物种不匹配(先查 taxonomy);或 ID 类型不在 STRING 覆盖内 |
 | KEGG `HTTP 400 /find/...` | org 写法:`find genes query+org`(脚本已处理);org 代码查 KEGG 生物列表 |
 | RCSB meta chains/ligands 为空 | 自动回退解析结构文件;仍空则该条目确无聚合物链 |
+| PowerShell 下 uniprot search `unrecognized arguments`(如 fluitans) | 查询串内嵌双引号与外层双引号冲突导致参数碎裂;整段查询用**单引号**包裹、内部用双引号(见第一节) |
+| STRING network 显示名是怪异别名(如 MTI20.21) | STRING `preferredName` ≠ 蛋白名;以 map 映射行/stringId 为准 |
 | 429 反复 | 脚本已退避;降低并发(这些端点 1 req/s 量级足够) |

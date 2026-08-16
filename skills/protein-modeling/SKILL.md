@@ -48,15 +48,22 @@ description: "本机科研级蛋白质结构预测与互作技能:LocalColabFold
 - **8GB 显存纪律**:`-NumModels 1`、`-NumRecycle 3`;OOM 加 `--disable-unified-memory`(脚本已内置)+ `XLA_PYTHON_CLIENT_PREALLOCATE=false`
 - 结果:`*_unrelaxed_rank_001_*.pdb` + pLDDT/PAE PNG + scores JSON;质量评估用 `protein-quality` 技能的 `struct_eval.py`(TM-score/lDDT/DockQ,与官方 TMalign 交叉验证)
 
-## 二、ESMFold 快速通道(云 API,零本地依赖)
+## 二、ESMFold 快速通道(云 API,零本地依赖)—— ⚠️ 降级为备用通道
 
+- **可用性现状(2026-08 实测)**:ESM Atlas 连续多轮全部 HTTP 504(退避重试内置但救不了服务端),**请当作备用通道,不要作为首选**。首选本地 AF2(第一节)。
 - 客户端:`C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\resources\esmfold_api.py`(纯标准库)
 - 用法:
   ```powershell
   & 'C:\Program Files\Python313\python.exe' "...\resources\esmfold_api.py" --fasta query.fasta --out D:\bioai\jobs\esm_out.pdb
   ```
 - 编程调用:`from esmfold_api import fold_sequence; pdb_text = fold_sequence(seq)`
-- 特点:免费无 key、分钟级、无 MSA;适合快速粗模/断网兜底之外的"快速通道";速率受限时退避重试已内置
+- 特点:免费无 key、分钟级、无 MSA;失败信息中已内置本地兜底提示
+- **失败兜底(免网络,离线 AF2)**:
+  ```powershell
+  & 'C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\resources\run_colabfold.ps1' `
+      -Fasta query.fasta -MsaMode single_sequence -ModelType alphafold2_ptm
+  ```
+  (181 aa 单体实测:single_sequence 25 s、MSA 42 s)
 
 ## 三、ESM-2 嵌入特征(残基级 / 序列级)
 
@@ -129,7 +136,7 @@ $M = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\re
 |---|---|
 | `CUDA out of memory` | 8GB 显存:减 `--num-recycle`/模型数,或 `--msa-mode single_sequence` |
 | colabfold 参数下载到 C 盘 | 未设重定向变量;按第〇节设置后重跑(部署时已实测变量名) |
-| `RemoteDisconnected`(ESM Atlas) | 已内置浏览器 UA + 退避重试;仍失败则稍后再试或切 AF2 |
+| `RemoteDisconnected` / 连续 `HTTP 504`(ESM Atlas) | Atlas 服务端长期不可用(2026-08 实测连续 504);内置浏览器 UA + 退避重试救不了服务端故障 → 直接用本地兜底:`run_colabfold.ps1 -MsaMode single_sequence` |
 | vina 报受体/配体 PDBQT 不合法 | 用 meeko 重做配体;受体去水/去配体后再 rigid 转换 |
 | LightDock Windows 不可用 | 走 WSL 或改 AF2-Multimer 复合物预测 + pp_interact 分析 |
 | `ModuleNotFoundError: Bio` | 生信脚本必须用 Python313 + `PYTHONPATH=D:\biopython`,不要用 venv 里的 python 跑 Bio 脚本 |
@@ -147,8 +154,18 @@ $M = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\re
 | esm_embed `KeyError: ':'` | 复合物 fasta 的 `:` 连链格式;脚本已自动按链拆分 |
 | GCS 直连时好时坏/0 字节 | 多前端 IP 部分被墙;加速器开启时下载加 `-Proxy http://127.0.0.1:7897`(实测 2-15MB/s);或 `D:\bioai\bin\parallel-download.ps1` 钉健康 IP + 持久分块续传 |
 | pip 下载占满 C 盘 | 忘设 `PIP_CACHE_DIR`;pip 缓存必须重定向(第〇节) |
+| af2_predict 报 `WSL_E_DISTRO_NOT_FOUND` | `wsl -l -q` 输出被按 UTF-16 解码,发行版名内残留 NUL(`U\0b\0u\0n\0t\0u\0`),`wsl -d` 找不到发行版 → run_colabfold.ps1 已加 `-replace "\u0000",""` 修复(2026-08 实测,修复后 181 aa 单体 single_sequence 25 s / MSA 42 s);**注意:preset-maintenance 的旧版备份还原会覆盖此修复,先同步备份** |
 
-## 八、什么时候用这个 skill
+## 八、过表达克隆的供体序列核验要点(2026-08 实测坑)
+
+设计过表达构建(如 Rubisco 小亚基供体基因)前,**必须**核验以下链路,否则会拿截短/错源 CDS 设计引物:
+
+1. **UniProt → CDS 优先走 EMBL 交叉引用**:`Entrez.elink`(protein→nuccore)对部分 UniProt accession 无链接;更稳的路线是 UniProt 条目里的 EMBL 交叉引用 → 取对应的 GenBank mRNA 记录(如 `AB034748.1`)。
+2. **警惕"部分 CDS"记录**:同义片段记录可能是 5' 截短(实测 OsRCA 的 Q9AT38 即无转运肽的部分 CDS)——务必用全长前体 mRNA 设计,确认 **CDS 包含转运肽/信号肽** 后再设计表达引物。
+3. 成熟肽 vs 前体:表达定位不同(叶绿体转运 vs 胞质表达)需要不同起始位点,先确定表达策略再选 CDS 起点。
+4. 引物设计工具链:Biopython `Bio.SeqUtils.MeltingTemp.Tm_NN` + `Bio.Restriction` 酶切位点冲突检测(见 biopython-analyses 技能第六节)。
+
+## 九、什么时候用这个 skill
 
 - 序列 → 三维结构(单链或复合物)预测与质量评估(pLDDT/PAE + TM-score/lDDT/DockQ)
 - 序列 → 嵌入特征(ESM-2,残基级/序列级)

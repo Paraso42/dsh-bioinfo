@@ -70,7 +70,9 @@ deviate.
 - **Windows + PowerShell.** Every tool command is pwsh; a Linux/bash backend
   does not exist yet (contributions welcome).
 - `af2_predict` needs WSL2 + an NVIDIA GPU for practical runtimes; CPU works
-  but is slow — the `esmfold_predict` cloud channel is the fast alternative.
+  but is slow — `esmfold_predict` is the zero-setup cloud alternative, but the
+  ESM Atlas has been intermittently down (repeated 504s, 2026-08), so treat it
+  as a fallback; offline fallback is `af2_predict` with `msaMode: "single_sequence"`.
 
 ## Known upstream issue (tool schema compilation)
 
@@ -102,3 +104,6 @@ weights) — is itemized in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) (tool/backend
 rules) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Report vulnerabilities
 privately via GitHub security advisories ([SECURITY.md](SECURITY.md)).
+
+Real-world usage feedback and its disposition (fixed / documented / backlog)
+is tracked in [FEEDBACK.md](FEEDBACK.md).

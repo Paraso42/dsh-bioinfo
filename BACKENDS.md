@@ -34,6 +34,9 @@ each tool runs and what it consumes.
 - argv: `<sequence> --out <pdb> [--retries N]`
 - back: exit 0 + PDB written to `--out`
 - result: `{exitCode, stdout, stderr, pdbPath}`
+- **availability**: the ESM Atlas endpoint has been repeatedly down (HTTP 504,
+  2026-08). Treat as a fallback channel; on failure the tool appends a hint to
+  use `af2_predict` with `msaMode: "single_sequence"` (offline AF2).
 
 ### pp_interact
 - argv: `--complex <pdb> --chains <A> <B> [--cutoff F] --out <json>`
@@ -51,8 +54,9 @@ each tool runs and what it consumes.
 - result: `{exitCode, stdout, stderr, outdir}`
 
 ### struct_eval
-- argv: `--model <pdb> --ref <pdb> [--complex] [--model-chains .. --ref-chains ..] [--rec-ref/--lig-ref/--rec-model/--lig-model ..] --out <json>`
-- back: JSON (TM-score, CA/all-atom RMSD, lDDT, GDT-TS/HA, DockQ, grade)
+- argv: `--model <pdb> --ref <pdb> [--complex] [--model-chains .. --ref-chains ..] [--rec-ref/--lig-ref/--rec-model/--lig-model ..] [--mapping auto|homology|identical] --out <json>`
+- back: JSON (TM-score, CA/all-atom RMSD, lDDT, GDT-TS/HA, DockQ, grade); per-chain `mapping_mode`, `coverage`, `seq_identity`
+- mapping: `auto` (direct when sequences identical, else full homology alignment) / `homology` / `identical` (legacy: identical-residue pairs only — sparse coverage on distant homologs; metrics are computed on the mapped subset)
 - result: `{exitCode, stdout, stderr, jsonPath, report}`
 
 ### vscreen_run
@@ -68,4 +72,16 @@ each tool runs and what it consumes.
 
 `{exitCode, stdout, stderr}` plus the tool-specific fields above; when the
 backend writes a JSON report the plugin embeds it verbatim as `report`.
-Missing backends surface the shell error to the model — no crash.
+Backend JSON is sanitized on read: non-finite floats (`NaN`/`Infinity`, e.g.
+empty interfaces in `pp_interact`) become `null` so tool results stay lossless
+JSON. Missing backends surface the shell error to the model — no crash.
+
+## Data channel reliability (field-tested 2026-08)
+
+| Channel | Status |
+|---|---|
+| NCBI Entrez / BLAST (browser UA) / Datasets | stable |
+| UniProt / RCSB PDB / STRING | stable |
+| MMseqs2 (colabfold server, via WSL) | usable |
+| NCBI FTP | bandwidth-shaped (~1 KB/s); use Datasets API / efetch slices |
+| ESM Atlas (`esmfold_predict`) | **frequently down (repeated 504)** — fallback channel; local AF2 `single_sequence` is the offline fallback |

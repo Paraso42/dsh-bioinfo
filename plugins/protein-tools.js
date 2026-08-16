@@ -119,11 +119,32 @@ module.exports = {
       return [{ type: 'text', text: body }]
     }
 
+    // Backend scripts (Biopython/numpy) can emit non-finite floats (NaN /
+    // Infinity, e.g. empty interfaces -> log10(0)). DSH tool results must be
+    // lossless JSON, so sanitize both the raw JSON text (before parse) and the
+    // parsed tree. Text-level: NaN/Infinity tokens only appear as JSON values
+    // (after ':' / ',' / '[' and before ',' / '}' / ']'), never inside string
+    // literals, so the anchored regex is safe.
+    const sanitizeJsonText = (raw) => raw
+      .replace(/([\[:,]\s*)(-?Infinity|NaN)(?=\s*[,\]])/g, '$1null')
+    const sanitizeTree = (node) => {
+      if (Array.isArray(node)) {
+        for (let i = 0; i < node.length; i++) node[i] = sanitizeTree(node[i])
+        return node
+      }
+      if (node !== null && typeof node === 'object') {
+        for (const k of Object.keys(node)) node[k] = sanitizeTree(node[k])
+        return node
+      }
+      if (typeof node === 'number' && !Number.isFinite(node)) return null
+      return node
+    }
+
     const readJson = async (path) => {
       try {
         const target = await fs.resolve(path)
         const raw = await fs.readText(target)
-        return JSON.parse(raw)
+        return sanitizeTree(JSON.parse(sanitizeJsonText(raw)))
       } catch (e) {
         return null
       }
@@ -135,7 +156,7 @@ module.exports = {
       // ── 1. esmfold_predict: sequence → PDB via the free ESM Atlas API ──
       disposers.push(ctx.tools.register(defineToolDef({
         name: 'esmfold_predict',
-        description: 'Fold a protein sequence into a PDB structure via the free ESM Metagenomic Atlas API (no key). Fast (minutes) cloud channel for rough models; browser-UA + retry built in. For research-grade local prediction use af2_predict instead. Returns stdout/stderr and the written PDB path.',
+        description: 'Fold a protein sequence into a PDB structure via the free ESM Metagenomic Atlas API (no key). Fast (minutes) cloud channel for rough models; browser-UA + retry built in. NOTE: the Atlas has been intermittently down (repeated 504s) — treat it as a fallback channel; for research-grade local prediction use af2_predict (offline: msaMode "single_sequence"). Returns stdout/stderr and the written PDB path.',
         parameters: {
           sequence: { type: 'string', required: true, description: 'Protein sequence (letters only).' },
           out: { type: 'string', description: 'Output PDB path. Default: <jobs dir>\\esmfold\\esm_<timestamp>.pdb (BIO_TOOLS_JOBS_DIR).' },
@@ -158,6 +179,10 @@ module.exports = {
           ].join('\n')
           const result = await runShell(command, exec, args.timeoutMs !== undefined ? args.timeoutMs : 300000)
           const value = outOf(result)
+          if (result.exitCode !== 0) {
+            value.stdout += (value.stdout.endsWith('\n') ? '' : '\n')
+              + '[tool hint] ESM Atlas often 504s. Local fallback: af2_predict with msaMode "single_sequence" (offline AF2), or CLI: & <preset-res>\\run_colabfold.ps1 -Fasta seq.fasta -MsaMode single_sequence\n'
+          }
           value.pdbPath = result.exitCode === 0 ? out : undefined
           return value
         },
@@ -296,7 +321,7 @@ module.exports = {
       // ── 5. struct_eval: quality vs reference (TM-score/lDDT/GDT/DockQ) ──
       disposers.push(ctx.tools.register(defineToolDef({
         name: 'struct_eval',
-        description: 'Evaluate a predicted structure against a reference (crystal/native): TM-score (validated against official TMalign), CA/all-atom RMSD, lDDT, GDT-TS/GDT-HA, and for complexes DockQ (Fnat/iRMS/LRMS). Residue numbering is mapped automatically by sequence alignment. Returns the full JSON report plus a confidence grade.',
+        description: 'Evaluate a predicted structure against a reference (crystal/native): TM-score (validated against official TMalign), CA/all-atom RMSD, lDDT, GDT-TS/GDT-HA, and for complexes DockQ (Fnat/iRMS/LRMS). Residue numbering is mapped by sequence alignment: identical sequences map directly; differing sequences use a full homology alignment by default (mapping "auto"), so coverage/seq_identity reflect the real full-length identity. For distant homologs, mapping "identical" (legacy) maps identical-residue pairs only — sparse coverage, metrics computed on that subset, so a low TM-score may mean sparse mapping rather than a wrong fold. Returns the full JSON report plus a confidence grade.',
         parameters: {
           model: { type: 'string', required: true, description: 'Path to the predicted/model PDB.' },
           ref: { type: 'string', required: true, description: 'Path to the reference/native PDB.' },
@@ -307,6 +332,7 @@ module.exports = {
           ligRef: { type: 'string', description: 'Complex mode: reference ligand chain (default last).' },
           recModel: { type: 'string', description: 'Complex mode: model receptor chain (default first).' },
           ligModel: { type: 'string', description: 'Complex mode: model ligand chain (default last).' },
+          mapping: { type: 'string', description: 'Residue mapping mode: "auto" (default: direct when sequences identical, else full homology alignment) | "homology" (force global alignment, standard weights) | "identical" (identical-residue pairs only, legacy conservative).' },
           out: { type: 'string', description: 'JSON report path. Default <jobs dir>\\struct_eval\\eval_<timestamp>.json' },
           timeoutMs: { type: 'number', description: 'Timeout in milliseconds. Default 900000 (large proteins need ~1 min).' },
         },
@@ -329,9 +355,11 @@ module.exports = {
               + (typeof args.recModel === 'string' ? " --rec-model '" + sq(args.recModel) + "'" : '')
               + (typeof args.ligModel === 'string' ? " --lig-model '" + sq(args.ligModel) + "'" : '')
             : ''
+          const mp = typeof args.mapping === 'string' && ['auto', 'homology', 'identical'].includes(args.mapping)
+            ? " --mapping '" + sq(args.mapping) + "'" : ''
           const command = [
             "& '" + cfg.venvPy + "' '" + cfg.resPqDir + "\\struct_eval.py' --model '" + sq(args.model)
-              + "' --ref '" + sq(args.ref) + "'" + (args.complex ? ' --complex' : '') + mc + rc + dq
+              + "' --ref '" + sq(args.ref) + "'" + (args.complex ? ' --complex' : '') + mc + rc + dq + mp
               + " --out '" + sq(jsonPath) + "'",
             'exit $LASTEXITCODE',
           ].join('\n')

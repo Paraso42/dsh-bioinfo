@@ -9,8 +9,11 @@ r"""struct_eval.py — 结构质量评估闭环(预测 vs 参考)
 指标:RMSD(叠加后,CA/全原子)、TM-score(迭代 Kabsch,标准 Zhang & Skolnick 算法)、
 lDDT(全局 + 逐残基)、GDT_TS / GDT_HA、覆盖度;复合物模式加 DockQ(Fnat / iRMS / LRMS)。
 
-残基映射策略:模型与参考残基编号不一致时(如 colabfold 输出从 1 重编号)自动按序列
-全局比对映射;编号一致时直接对应。链映射默认按出现顺序(--model-chains / --ref-chains 可覆盖)。
+残基映射策略(--mapping,默认 auto):模型与参考序列相同时直接对角映射(colabfold 重编号场景);
+序列不同时默认做全长同源全局比对(homology 权重),coverage/seq_identity 反映真实全长一致率。
+远缘同源物可用 --mapping identical 退回复刻旧行为(只保留"相同残基对",覆盖率稀疏,
+TM-score/lDDT 只在相同残基子集上计算 —— 低 TM 未必是折叠错误,可能只是映射稀疏)。
+链映射默认按出现顺序(--model-chains / --ref-chains 可覆盖)。
 
 运行环境(venv 内含 numpy/scipy/biopython):
   & 'D:\bioai\venv\Scripts\python.exe' struct_eval.py --model model.pdb --ref native.pdb \
@@ -66,10 +69,20 @@ def _chain_heavy(model, chain_id):
 
 
 # ── 序列映射 ────────────────────────────────────────────────────────────────
-def map_residues(seq_a, seq_b):
-    """两条残基序列 -> [(i, j)] 对齐索引对。编号一致且等长时直接对角映射;
-    否则用 Bio.Align.PairwiseAligner 全局比对(取第一条比对路径)。
-    无 Biopython 且编号不一致时抛错(明确提示)。"""
+def map_residues(seq_a, seq_b, mode="auto"):
+    """两条残基序列 -> [(i, j)] 对齐索引对。
+
+    mode:
+      auto      序列相同时直接对角映射(编号不同没关系);否则同源全局比对
+      homology  标准全局比对权重(match=2 / mismatch=-1 / gap=-2,-0.5):全长同源
+                残基对全部参与映射,coverage/seq_identity 反映真实全长一致率
+                (远缘同源物 ~55% 一致时覆盖≈min(长度比,100%),seq_identity≈55%)
+      identical 保守模式:只保留"相同残基对"(旧行为)。远缘同源物覆盖率会显著低于
+                100%,TM-score/lDDT 只在相同残基子集上计算 —— 低 TM 未必代表折叠
+                错误,可能只是映射稀疏,需结合 coverage 解读
+    """
+    if mode not in ("auto", "homology", "identical"):
+        raise ValueError("mapping mode must be auto|homology|identical")
     if seq_a == seq_b:
         return [(i, i) for i in range(len(seq_a))]
     try:
@@ -80,8 +93,12 @@ def map_residues(seq_a, seq_b):
             "install biopython into D:\\bioai\\venv")
     aln = PairwiseAligner()
     aln.mode = "global"
-    aln.match_score, aln.mismatch_score = 1, 0
-    aln.open_gap_score, aln.extend_gap_score = 0, 0
+    if mode == "identical":
+        aln.match_score, aln.mismatch_score = 1, 0
+        aln.open_gap_score, aln.extend_gap_score = 0, 0
+    else:
+        aln.match_score, aln.mismatch_score = 2, -1
+        aln.open_gap_score, aln.extend_gap_score = -2, -0.5
     a, b = seq_a, seq_b
     res = aln.align(a, b)[0]
     ia = np.cumsum([0] + [1 if c != "-" else 0 for c in res[0]])
@@ -89,6 +106,8 @@ def map_residues(seq_a, seq_b):
     pairs = []
     for k in range(len(res[0])):
         if res[0][k] != "-" and res[1][k] != "-":
+            if mode == "identical" and seq_a[ia[k]] != seq_b[ib[k]]:
+                continue
             pairs.append((int(ia[k]), int(ib[k])))
     return pairs
 
@@ -411,7 +430,7 @@ def gdt(coords_a, coords_b, thresholds=(1.0, 2.0, 4.0, 8.0)):
 
 
 # ── DockQ(复合物模式)────────────────────────────────────────────────────────
-def dockq(model, ref, rec_ref, lig_ref, rec_model, lig_model):
+def dockq(model, ref, rec_ref, lig_ref, rec_model, lig_model, mapping_mode="auto"):
     """DockQ = (Fnat + 1/(1+(iRMS/1.5)^2) + 1/(1+(LRMS/8.5)^2)) / 3。
     原生接触:参考中受体-配体重原子对 < 5 Å;Fnat = 模型中对应对 < 5 Å 的占比。"""
     heavy_ref_rec = _chain_heavy(ref, rec_ref)
@@ -424,8 +443,8 @@ def dockq(model, ref, rec_ref, lig_ref, rec_model, lig_model):
         return [(r, sorted(heavy[r])) for r in sorted(heavy)]
     rec_ref_list, lig_ref_list = _seq_of(heavy_ref_rec), _seq_of(heavy_ref_lig)
     rec_mod_list, lig_mod_list = _seq_of(heavy_mod_rec), _seq_of(heavy_mod_lig)
-    map_rec = dict(map_residues([r for r, _ in rec_ref_list], [r for r, _ in rec_mod_list]))
-    map_lig = dict(map_residues([r for r, _ in lig_ref_list], [r for r, _ in lig_mod_list]))
+    map_rec = dict(map_residues([r for r, _ in rec_ref_list], [r for r, _ in rec_mod_list], mode=mapping_mode))
+    map_lig = dict(map_residues([r for r, _ in lig_ref_list], [r for r, _ in lig_mod_list], mode=mapping_mode))
 
     # 原生接触对(以 (ref_resnum, atom_name) 为键)
     native = []
@@ -514,7 +533,8 @@ def dockq(model, ref, rec_ref, lig_ref, rec_model, lig_model):
 # ── 主评估 ──────────────────────────────────────────────────────────────────
 def evaluate(model_path, ref_path, model_chains=None, ref_chains=None,
              complex_mode=False, rec_ref=None, lig_ref=None,
-             rec_model=None, lig_model=None, ca_only=True):
+             rec_model=None, lig_model=None, ca_only=True,
+             mapping_mode="auto"):
     model = _load(model_path)
     ref = _load(ref_path)
 
@@ -550,7 +570,7 @@ def evaluate(model_path, ref_path, model_chains=None, ref_chains=None,
             raise ValueError("chain %s/%s has no CA atoms" % (cm, cr))
         seq_m = "".join(aa3to1(r) for _, r, _ in mc)
         seq_r = "".join(aa3to1(r) for _, r, _ in rc)
-        mapping = map_residues(seq_m, seq_r)
+        mapping = map_residues(seq_m, seq_r, mode=mapping_mode)
         a = np.array([mc[i][2] for i, _ in mapping])
         b = np.array([rc[j][2] for _, j in mapping])
         norm = len(rc)
@@ -574,6 +594,7 @@ def evaluate(model_path, ref_path, model_chains=None, ref_chains=None,
             "model_chain": cm, "ref_chain": cr,
             "n_ref_residues": len(rc), "n_model_residues": len(mc),
             "n_aligned": len(mapping),
+            "mapping_mode": mapping_mode,
             "coverage": round(len(mapping) / max(1, len(rc)), 4),
             "seq_identity": round(sum(1 for i, j in mapping if seq_m[i] == seq_r[j]) / max(1, len(mapping)), 4),
             "tm_score": round(tm, 4), "rmsd_ca_core": round(rmsd_core, 3),
@@ -604,7 +625,8 @@ def evaluate(model_path, ref_path, model_chains=None, ref_chains=None,
         lig_ref = lig_ref or ref_chains[-1]
         rec_model = rec_model or model_chains[0]
         lig_model = lig_model or model_chains[-1]
-        dq = dockq(model, ref, rec_ref, lig_ref, rec_model, lig_model)
+        dq = dockq(model, ref, rec_ref, lig_ref, rec_model, lig_model,
+                   mapping_mode=mapping_mode)
         report["dockq"] = dq
         report["complex_mode"] = {"rec_ref": rec_ref, "lig_ref": lig_ref,
                                   "rec_model": rec_model, "lig_model": lig_model}
@@ -625,9 +647,10 @@ def _print_report(r):
     print("model: %s" % r["model"])
     print("ref:   %s" % r["ref"])
     for c in r["chains"]:
-        print("chain %s -> %s : TM=%.4f  CA-RMSD=%.2f A  lDDT=%.4f  GDT_TS=%.4f  GDT_HA=%.4f  cov=%.1f%%  id=%.1f%%"
+        print("chain %s -> %s : TM=%.4f  CA-RMSD=%.2f A  lDDT=%.4f  GDT_TS=%.4f  GDT_HA=%.4f  cov=%.1f%%  id=%.1f%%  map=%s"
               % (c["model_chain"], c["ref_chain"], c["tm_score"], c["rmsd_ca_core"],
-                 c["lddt"], c["gdt_ts"], c["gdt_ha"], 100 * c["coverage"], 100 * c["seq_identity"]))
+                 c["lddt"], c["gdt_ts"], c["gdt_ha"], 100 * c["coverage"],
+                 100 * c["seq_identity"], c["mapping_mode"]))
     if "complex_whole" in r:
         w = r["complex_whole"]
         print("whole complex: TM=%.4f  CA-RMSD=%.2f A" % (w["tm_score"], w["rmsd_ca"]))
@@ -661,13 +684,18 @@ def main(argv=None):
     ap.add_argument("--lig-ref", dest="lig_ref")
     ap.add_argument("--rec-model", dest="rec_model")
     ap.add_argument("--lig-model", dest="lig_model")
+    ap.add_argument("--mapping", choices=["auto", "homology", "identical"],
+                    default="auto",
+                    help="residue mapping mode: auto (identical seqs -> direct, "
+                         "else homology alignment) | homology | identical")
     ap.add_argument("--out", help="write JSON report to file")
     args = ap.parse_args(argv)
     try:
         report = evaluate(args.model, args.ref, model_chains=args.model_chains,
                           ref_chains=args.ref_chains, complex_mode=args.complex,
                           rec_ref=args.rec_ref, lig_ref=args.lig_ref,
-                          rec_model=args.rec_model, lig_model=args.lig_model)
+                          rec_model=args.rec_model, lig_model=args.lig_model,
+                          mapping_mode=args.mapping)
     except Exception as e:
         print("ERROR: %s" % e, file=sys.stderr)
         return 2

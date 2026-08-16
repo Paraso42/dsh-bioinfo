@@ -18,6 +18,7 @@ r"""pp_interact.py — 蛋白-蛋白互作界面分析(接触对 / 界面残基 
 """
 import argparse
 import json
+import math
 import os
 import sys
 import tempfile
@@ -164,6 +165,18 @@ def analyze_complex(path, chains=("A", "B"), cutoff=DEFAULT_CUTOFF,
     return report
 
 
+def _json_safe(obj):
+    """把非有限浮点(NaN/Infinity,如空界面的 log10(0))清洗为 None,
+    保证 JSON 报告可被严格解析器(含 DSH 工具结果层)无损读取。"""
+    if isinstance(obj, dict):
+        return {k: _json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_json_safe(v) for v in obj]
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return None
+    return obj
+
+
 def _print_report(r):
     print("complex: %s  chains: %s" % (r["complex"], ",".join(r["chains"])))
     print("cutoff: %.1f A | contacts: %d%s" % (
@@ -200,7 +213,8 @@ def main(argv=None):
     _print_report(report)
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
-            json.dump(report, f, ensure_ascii=False, indent=2)
+            json.dump(_json_safe(report), f, ensure_ascii=False, indent=2,
+                      allow_nan=False)
         print("JSON written: %s" % args.out)
     return 0
 
