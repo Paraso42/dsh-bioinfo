@@ -29,6 +29,26 @@ import time
 import numpy as np
 
 
+def _setup():
+    """Agg 后端 + 中文字体自动选择(雅黑/黑体/思源黑体/宋体 → DejaVu 兜底)。"""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib import font_manager
+    installed = {f.name for f in font_manager.fontManager.ttflist}
+    for cand in ("Microsoft YaHei", "SimHei", "Noto Sans CJK SC",
+                 "WenQuanYi Micro Hei", "SimSun"):
+        if cand in installed:
+            plt.rcParams["font.sans-serif"] = [cand, "DejaVu Sans"]
+            break
+    else:
+        plt.rcParams["font.sans-serif"] = ["DejaVu Sans"]
+        print("WARN: no CJK font found; Chinese labels will render as boxes",
+              file=sys.stderr)
+    plt.rcParams["axes.unicode_minus"] = False
+    return plt
+
+
 # 标准氨基酸完整重原子集(缺侧链原子的晶体残基会被过滤,避免 OpenMM 模板错配)
 AA_HEAVY = {
     "GLY": {"N", "CA", "C", "O"},
@@ -303,9 +323,7 @@ def _sanitize_dcd(path):
 
 def analyze_trajectory(topology, dcd, outdir, dt_ps=0.002, report_interval=1000):
     """mdtraj 读取 DCD + 对齐 + RMSD/RMSF(OpenMM DCDFile 只是写入器,parmed 4.3.1 读不了 DCD)。"""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
+    plt = _setup()
     import mdtraj as md
 
     _sanitize_dcd(dcd)

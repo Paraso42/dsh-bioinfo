@@ -104,10 +104,15 @@ tree2 = constructor.build_tree(msa)
 tree2.format("newick")                            # 序列化为字符串
 Phylo.write(tree2, "out.nwk", "newick")
 
-# 绘图（matplotlib；无头环境用 Agg 后端 + savefig）：
+# 绘图（matplotlib；无头环境用 Agg 后端 + savefig；中文字体自动选择，防止豆腐块）：
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
+_cjk = next((f.name for f in font_manager.fontManager.ttflist
+             if f.name in ("Microsoft YaHei", "SimHei", "SimSun")), "DejaVu Sans")
+plt.rcParams["font.sans-serif"] = [_cjk]
+plt.rcParams["axes.unicode_minus"] = False
 fig = plt.figure(figsize=(8, 5), dpi=100)
 ax = fig.add_subplot(1, 1, 1)
 Phylo.draw(tree2, axes=ax)

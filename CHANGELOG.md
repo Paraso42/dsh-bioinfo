@@ -1,5 +1,45 @@
 # 更新日志 (Changelog)
 
+## v0.2.1 — 2026-08(环境补强:科研级渲染 · 中文字体 · 本地 MSA 库安装器)
+
+**致全体 dsh-bioinfo(生信模式)用户:**
+
+本版本根据第二轮全天实测反馈发布(背景:当日全部 MSA 服务器不可用——官方 API 被墙、备用站废弃、ESM Atlas 连续 504——用户以 1557 条 UniProt 同源序列手工建 MSA 完成结构预测,TM-score 0.832 / RMSD 1.76 Å,结果未打折)。共修复 2 项环境缺陷、新增 2 项能力、核实 1 项历史反馈。
+
+### 一、修复内容
+
+1. **matplotlib 中文字体豆腐块。** 三个出图脚本(`stat_plots.py`、`seq_logo.py`、`md_mmgbsa.py`)统一内置中文字体自动选择(微软雅黑 → 黑体 → 思源黑体 → 宋体 → DejaVu 兜底并告警)+ `axes.unicode_minus=False`;bio-visualization、biopython-analyses 技能文档补同一配方供自写代码使用。实测:中文行名热图正常渲染。
+
+2. **机器上没有任何分子渲染器。** 已在本机安装 **PyMOL 3.1.0 open-source** 至 `D:\bioai\venv`(来源:cgohlke cp313 轮子,GitHub release v2025.2.2;官方 pymol.org Windows 包已下架、PyPI 仅有 3.2.0a0 的 Windows 轮子且实测损坏,这两条路均已标注勿走),并新增无头渲染脚本 `pymol_render.py`:五种风格(cartoon/publication/rainbow/surface/line)+ 配体元素着色 + 半透明表面叠加,300 dpi ray-trace 出版级出图。1brs 复合物(1781 原子)三风格冒烟测试通过。适配 PyMOL 3.x API 变更(`by*` 色名全部移除 → `util.cnc`)。
+
+### 二、新增能力
+
+3. **本地 MSA 数据库一键安装器**(`scripts/install-local-msa.ps1):在 WSL 中安装 mmseqs2(apt → conda 走 TUNA conda-forge 镜像)并下载 UniRef30 2302 + colabfold_envdb 202108(约 70 GB,复用 deploy/parallel-download.ps1 分块断点续传,支持 `-Proxy`)。数据源实测:哥廷根 GWDG 镜像可达(文件级),steineggerlab 官方源与 mmseqs.com 当前不可达;清华/中科大/NJU 不镜像该数据库。装好后两段式(colabfold_search 本地检索 → colabfold_batch 出模)即可完全摆脱 MSA 服务器;接入 `af2_predict` 的自动模式待数据库落盘后验收。
+
+### 三、历史反馈核实
+
+4. **`esmfold_predict` "value is not lossless JSON"**:复核确认该缺陷已由 v0.2.0 的插件层双层清洗覆盖(全部 7 个工具的报告统一经 `readJson` 清洗,esmfold 走同一路径),**无需再改代码**;用户当时"白跑一次"发生在修复发布之前。
+
+### 四、质量验证
+
+| 项目 | 结果 |
+|---|---|
+| `npm test`(7 工具模式校验) | 全部通过(ALL SCHEMAS OK) |
+| Python 语法校验(4 个脚本) | 全部通过 |
+| 中文字体确定性验证 | matplotlib 识别雅黑/黑体/宋体;中文热图正常出图 |
+| PyMOL 渲染冒烟测试(1brs AD 复合物) | publication/cartoon/rainbow 三风格全部出图(469/305/310 KB PNG) |
+
+### 五、用户行动项
+
+1. **同步 preset 文件并重启 DSH 主机进程**:技能文档(SKILL.md)变更须重启生效;资源脚本按次读取、无需重启。
+2. **同步刷新维护备份**:如保有 `preset-maintenance` 技能备份,请一并刷新(本次变更 8 个文件)。
+3. **渲染能力即刻可用**:`pymol_render.py` 用法见 protein-modeling 技能第九节;本机已装好 PyMOL,无需额外安装。
+4. **本地 MSA 库(可选)**:`pwsh -File D:\bioai\dsh-bioinfo\scripts\install-local-msa.ps1 -InstallMmseqs` 再 `-DownloadDb`(约 70 GB,建议网络空闲时段)。
+
+反馈与问题请通过 GitHub Issues 提交;安全漏洞请走私有通告通道(见 SECURITY.md)。
+
+---
+
 ## v0.2.0 — 2026-08(用户反馈修复与行为变更版本)
 
 **致全体 dsh-bioinfo(生信模式)用户:**

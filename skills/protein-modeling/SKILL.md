@@ -16,10 +16,11 @@ description: "本机科研级蛋白质结构预测与互作技能:LocalColabFold
 | 路径 | 内容 |
 |---|---|
 | `D:\bioai\miniforge3` | Windows Miniforge;colabfold 环境(WSL 内亦有一套) |
-| `D:\bioai\venv` | Python 3.13 venv:vina + meeko + rdkit + openmm + numpy/scipy/biopython/pandas/matplotlib/seaborn/logomaker/pycirclize/mdtraj + prodigy-prot/prodigy-lig(化学信息学、可视化、MM-GBSA/MD、亲和力共用) |
+| `D:\bioai\venv` | Python 3.13 venv:vina + meeko + rdkit + openmm + numpy/scipy/biopython/pandas/matplotlib/seaborn/logomaker/pycirclize/mdtraj + prodigy-prot/prodigy-lig + **PyMOL 3.1.0 open-source(无头渲染,见第九节)**(化学信息学、可视化、MM-GBSA/MD、亲和力共用) |
 | `D:\bioai\venv-esm` | 独立 venv:torch(CPU) + fair-esm 2.0 + numpy(ESM-2 嵌入) |
 | `D:\bioai\models` | AF2 参数(COLABFOLDDIR)、torch hub 缓存(TORCH_HOME,ESM-2 权重) |
 | `D:\bioai\jobs` | 预测/对接/模拟任务输出目录 |
+| `D:\bioai\msa-db` | (可选)本地 MSA 数据库 UniRef30 + colabfold_envdb(~70 GB,未装则走 MMseqs2 服务器) |
 | `D:\bioai\pip-cache` | PIP_CACHE_DIR 重定向(所有 pip 必须带) |
 | `D:\bioai\preset-maintenance` | 技能备份与恢复(restore-bioinfo-skills.ps1) |
 | WSL2(Ubuntu) | colabfold 1.5.5 + jax 0.4.22 GPU 栈 + TMalign(20240303,TM-score 交叉验证用) |
@@ -45,6 +46,7 @@ description: "本机科研级蛋白质结构预测与互作技能:LocalColabFold
   ```
 - `-ModelType` 取值(**1.5.5 实测**,`multimer` 是无效值):复合物 `alphafold2_multimer_v3`(默认)/ v1/v2;单体 `alphafold2_ptm` / `alphafold2`;或 `auto`
 - `-MsaMode`:`mmseqs2_uniref_env`(MMseqs2 服务器,高质量,需外网)/ `single_sequence`(离线快速,精度低,验收时用此模式故 pLDDT≈36)
+- **MSA 服务器不可用时的两条路**:(1) 手工建 MSA——UniProt 批量拉同源序列 → 比对 → 走模板/特征路线(2026-08 实测:1557 条同源序列手工 MSA,最终 TM-score 0.832 / RMSD 1.76 Å,结果不打折);(2) **本地 MSA 数据库**——`D:\bioai\dsh-bioinfo\scripts\install-local-msa.ps1` 一键装 mmseqs2 + UniRef30 + envdb(源 GWDG 实测可达,resume-safe),装好后两段式:colabfold_search 本地检索 → colabfold_batch 出模(命令见安装器输出);接入 run_colabfold.ps1 的自动模式待库落盘后验收
 - **8GB 显存纪律**:`-NumModels 1`、`-NumRecycle 3`;OOM 加 `--disable-unified-memory`(脚本已内置)+ `XLA_PYTHON_CLIENT_PREALLOCATE=false`
 - 结果:`*_unrelaxed_rank_001_*.pdb` + pLDDT/PAE PNG + scores JSON;质量评估用 `protein-quality` 技能的 `struct_eval.py`(TM-score/lDDT/DockQ,与官方 TMalign 交叉验证)
 
@@ -155,6 +157,7 @@ $M = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\re
 | GCS 直连时好时坏/0 字节 | 多前端 IP 部分被墙;加速器开启时下载加 `-Proxy http://127.0.0.1:7897`(实测 2-15MB/s);或 `D:\bioai\bin\parallel-download.ps1` 钉健康 IP + 持久分块续传 |
 | pip 下载占满 C 盘 | 忘设 `PIP_CACHE_DIR`;pip 缓存必须重定向(第〇节) |
 | af2_predict 报 `WSL_E_DISTRO_NOT_FOUND` | `wsl -l -q` 输出被按 UTF-16 解码,发行版名内残留 NUL(`U\0b\0u\0n\0t\0u\0`),`wsl -d` 找不到发行版 → run_colabfold.ps1 已加 `-replace "\u0000",""` 修复(2026-08 实测,修复后 181 aa 单体 single_sequence 25 s / MSA 42 s);**注意:preset-maintenance 的旧版备份还原会覆盖此修复,先同步备份** |
+| PyMOL `Error: Unknown color`(`byelement` 等) | PyMOL 3.x 移除了全部 `by*` 色名;配体着色用 `cmd.util.cnc`(碳绿色 + 杂原子元素色,pymol_render.py 已内置) |
 
 ## 八、过表达克隆的供体序列核验要点(2026-08 实测坑)
 
@@ -165,7 +168,22 @@ $M = "C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\re
 3. 成熟肽 vs 前体:表达定位不同(叶绿体转运 vs 胞质表达)需要不同起始位点,先确定表达策略再选 CDS 起点。
 4. 引物设计工具链:Biopython `Bio.SeqUtils.MeltingTemp.Tm_NN` + `Bio.Restriction` 酶切位点冲突检测(见 biopython-analyses 技能第六节)。
 
-## 九、什么时候用这个 skill
+## 九、PyMOL 科研级渲染(2026-08 新增)
+
+`pymol_render.py`(resources/)无头出图:PDB/mmCIF → 300 dpi ray-trace PNG,五种风格 + 配体元素着色 + 半透明表面叠加。
+
+```powershell
+& 'D:\bioai\venv\Scripts\python.exe' 'C:\deepseek-harness\.dsh\.agent-presets\bioinfo\skills\protein-modeling\resources\pymol_render.py' `
+    complex.pdb --style publication --chains A+B --hetatm sticks --surface B `
+    --width 2400 --height 1800 --out pub.png
+```
+
+- 安装来源:cgohlke cp313 轮子(GitHub release v2025.2.2;官方 pymol.org Windows 包已下架、PyPI Windows 轮子损坏,均已实测,勿再走这两条路)
+- `--style cartoon`(二级结构)/ `publication`(按链 + 配体)/ `rainbow`(B-factor)/ `surface` / `line`;`--chains A+B` 限链;`--hetatm sticks|lines|off` 配体显示;`--surface B` 叠加半透明表面
+- 科研配图推荐:`--style publication --width 2400 --height 1800`(ray-trace);快速预览加 `--no-ray`
+- 与 AF2 的 pLDDT/PAE 图互补:后者是模型自带质量图,本脚本产出文章级结构渲染;后续可选:预测 vs 晶体叠加对齐图、批量图廊
+
+## 十、什么时候用这个 skill
 
 - 序列 → 三维结构(单链或复合物)预测与质量评估(pLDDT/PAE + TM-score/lDDT/DockQ)
 - 序列 → 嵌入特征(ESM-2,残基级/序列级)

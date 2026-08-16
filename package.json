@@ -1,6 +1,6 @@
 {
   "name": "dsh-bioinfo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Protein structure prediction & interaction tools for DeepSeek Harness (DSH) agent presets",
   "license": "MIT",

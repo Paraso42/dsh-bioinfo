@@ -94,3 +94,59 @@ wrappers 75 — the three fixes below close the main gap.
   e.g. Q9AT38 vs full-length precursor AB034748.1) is documented in the
   protein-modeling skill; a helper script that automates the EMBL-cross-ref →
   GenBank → full-length CDS verification is backlog.
+
+## Round 2 — day-long field test, MSA-outage recovery run (2026-08)
+
+User-reported verdict: **结果可靠、过程透明、环境有小缺陷**. The day proved the
+mode's resilience: with every MSA server down (official API blocked, backup
+site abandoned, ESM Atlas 504), a manual MSA of 1557 UniProt homologs
+recovered the structure — final TM-score 0.832, RMSD 1.76 Å vs crystal.
+
+### Already fixed (verified this round, no code change)
+
+1. **`esmfold_predict` tool result "value is not lossless JSON".** The wasted
+   run predates v0.2.0. All 7 tools read backend JSON through the plugin's
+   two-layer sanitizer (`protein-tools.js` `readJson`: NaN/Infinity tokens at
+   text level + non-finite values at tree level), and `esmfold_predict` reads
+   its report through `readJson` (L221) — verified, no gap. The backend writes
+   PDB text only, so no `allow_nan` change applies there.
+
+### Fixed this round (v0.2.1)
+
+2. **matplotlib Chinese tofu blocks.** All three figure-producing scripts
+   (`stat_plots.py`, `seq_logo.py`, `md_mmgbsa.py`) now auto-select a CJK font
+   (Microsoft YaHei → SimHei → Noto Sans CJK SC → SimSun → DejaVu fallback
+   with a stderr warning) and set `axes.unicode_minus=False`. Verified:
+   matplotlib sees YaHei/SimHei/SimSun; heatmap with Chinese row labels
+   (浮苔/菠菜/拟南芥) renders correctly. bio-visualization and
+   biopython-analyses skill docs ship the same recipe for ad-hoc code.
+
+3. **No molecular renderer on the machine.** PyMOL 3.1.0 open-source installed
+   into `D:\bioai\venv` from cgohlke's cp313 wheel (GitHub release v2025.2.2,
+   sha256 `62471028…`, via gh-proxy — github.com CDN is unreachable from this
+   network). Route facts verified 2026-08: official pymol.org Windows bundles
+   discontinued (installers directory emptied), PyPI carries only 3.2.0a0
+   Windows wheels (user-verified broken). New headless renderer
+   `skills/protein-modeling/resources/pymol_render.py`: 5 styles (cartoon /
+   publication / rainbow / surface / line), hetatm element coloring, optional
+   semi-transparent surface, 300 dpi ray-trace. Smoke-tested on the 1brs AD
+   complex (1781 atoms, 3 styles). PyMOL 3.x API note: all `by*` color names
+   are removed (`Unknown color`); ligand coloring uses `util.cnc` — recorded
+   in the protein-modeling error table.
+
+### Backlog (accepted; ready-to-run scripts shipped)
+
+4. **Local MSA database (~70 GB) to end server dependency.** All MSA channels
+   were unreachable today. `scripts/install-local-msa.ps1` installs mmseqs2 in
+   WSL (apt → conda via TUNA conda-forge mirror) and downloads UniRef30 2302 +
+   colabfold_envdb 202108 with resume support (reuses deploy/parallel-download.ps1,
+   `-Proxy` option). Source status probed 2026-08 from this machine: GWDG
+   Göttingen reachable at file level; steineggerlab workers and mmseqs.com
+   time out; NJU/TUNA/USTC do not mirror the colabfold DBs (404). WSL has no
+   mmseqs yet. Auto-wiring a local-MSA mode into `run_colabfold.ps1`/
+   `af2_predict` is pending the DB download + an end-to-end smoke test; the
+   two-step `colabfold_search` → `colabfold_batch` recipe is documented in the
+   protein-modeling skill and printed by the installer.
+
+- Renderer follow-ups (optional): predicted-vs-crystal alignment overlay,
+  per-chain surface presets, batch PNG gallery.

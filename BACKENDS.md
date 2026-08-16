@@ -9,7 +9,7 @@ each tool runs and what it consumes.
 | Variable | Default | Meaning |
 |---|---|---|
 | `BIO_TOOLS_PYTHON` | `C:\Program Files\Python313\python.exe` | Python 3.13 with Biopython |
-| `BIO_TOOLS_VENV_PY` | `D:\bioai\venv\Scripts\python.exe` | venv: RDKit/meeko/OpenMM/mdtraj/… |
+| `BIO_TOOLS_VENV_PY` | `D:\bioai\venv\Scripts\python.exe` | venv: RDKit/meeko/OpenMM/mdtraj/PyMOL 3.1.0/… |
 | `BIO_TOOLS_RES_DIR` | `<preset>\skills\protein-modeling\resources` | protein-modeling backends |
 | `BIO_TOOLS_RES_PQ_DIR` | `<preset>\skills\protein-quality\resources` | struct_eval / prodigy backends |
 | `BIO_TOOLS_RES_CI_DIR` | `<preset>\skills\chem-informatics\resources` | virtual_screen / mol_tools backends |
@@ -82,6 +82,28 @@ JSON. Missing backends surface the shell error to the model — no crash.
 |---|---|
 | NCBI Entrez / BLAST (browser UA) / Datasets | stable |
 | UniProt / RCSB PDB / STRING | stable |
-| MMseqs2 (colabfold server, via WSL) | usable |
+| MMseqs2 (colabfold server, via WSL) | **unreachable 2026-08** (official API blocked, backup site abandoned) — see local MSA DB installer below |
+| GWDG colabfold DB mirror (Göttingen) | reachable at file level (2026-08) — source for `scripts/install-local-msa.ps1` |
 | NCBI FTP | bandwidth-shaped (~1 KB/s); use Datasets API / efetch slices |
 | ESM Atlas (`esmfold_predict`) | **frequently down (repeated 504)** — fallback channel; local AF2 `single_sequence` is the offline fallback |
+
+## Local MSA database (offline MSA search)
+
+`scripts/install-local-msa.ps1` installs mmseqs2 (apt → conda via TUNA
+conda-forge mirror) plus UniRef30 + colabfold_envdb (~70 GB, resume-safe,
+`-Proxy` supported). After installation the two-step local recipe is
+`colabfold_search` (against `D:\bioai\msa-db`) → `colabfold_batch`. Auto-wiring
+a local-MSA mode into `run_colabfold.ps1`/`af2_predict` is pending the DB
+download + end-to-end smoke test.
+
+## Visualization
+
+- `pymol_render.py` (`<RES>\pymol_render.py`, `BIO_TOOLS_VENV_PY`): headless
+  PyMOL ray-trace renders (publication/cartoon/rainbow/surface/line styles,
+  hetatm coloring, semi-transparent surface overlay). PyMOL 3.1.0 open-source
+  installed from cgohlke's cp313 wheel — the official pymol.org Windows
+  bundles are discontinued and the PyPI Windows wheel is broken (both verified
+  2026-08).
+- matplotlib figures (`stat_plots.py`, `seq_logo.py`, `md_mmgbsa.py`): CJK
+  font auto-selection (Microsoft YaHei → SimHei → Noto Sans CJK SC → SimSun →
+  DejaVu fallback with warning).
