@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Install guide
+    url: https://github.com/Paraso42/dsh-bioinfo/blob/main/docs/INSTALL.md
+    about: Start here if you are deploying the preset on a new machine.
+  - name: Backend reference
+    url: https://github.com/Paraso42/dsh-bioinfo/blob/main/BACKENDS.md
+    about: What each tool runs, its argv contract and dependencies.
+  - name: Third-party licenses
+    url: https://github.com/Paraso42/dsh-bioinfo/blob/main/THIRD_PARTY_NOTICES.md
+    about: Academic-only components and citations before commercial use.

@@ -1,3 +1,11 @@
+<p align="center">
+  <img src="assets/banner.png" alt="dsh-bioinfo — 生信模式" width="100%">
+</p>
+
+[![CI](https://github.com/Paraso42/dsh-bioinfo/actions/workflows/ci.yml/badge.svg)](https://github.com/Paraso42/dsh-bioinfo/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%2B%20PowerShell-lightgrey.svg)](#platform-notes)
+
 # dsh-bioinfo
 
 **生信模式 (Bioinformatics Mode)** — a complete, research-grade bioinformatics
@@ -88,3 +96,9 @@ deploy/run-acceptance.ps1       # end-to-end AF2-Multimer acceptance
 Repository code: MIT ([LICENSE](LICENSE)). Backend toolchain licensing —
 including ACADEMIC-ONLY components (TM-align/TMalign, PRODIGY, local ESMFold
 weights) — is itemized in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Contributing & security
+
+Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) (tool/backend
+rules) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Report vulnerabilities
+privately via GitHub security advisories ([SECURITY.md](SECURITY.md)).

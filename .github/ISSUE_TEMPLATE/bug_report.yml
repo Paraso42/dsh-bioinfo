@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a defect in the preset, plugin, backend scripts, or deployment tooling.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. If the problem is that tools fail right after a
+        conversation starts with `Invalid schema ... got 'type: null'`, first
+        check the host-restart note in the README (the preset mounts once per
+        DSH host process).
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, DSH install source (npm/other), deployment layout (canonical D:\bioai or custom)
+      placeholder: Windows 11, dsh from npm, canonical layout
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: Affected tool(s)
+      description: Which of the 7 tools (or which skill/doc) is affected?
+      placeholder: af2_predict, struct_eval, docs/INSTALL.md
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Error message, exit code, or wrong output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / command output
+      description: Paste relevant stdout/stderr. Redact anything private.
+      render: shell
