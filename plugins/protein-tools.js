@@ -97,7 +97,9 @@ module.exports = {
     }
 
     const outOf = (result) => ({
-      exitCode: result.exitCode,
+      // Coerce exitCode: a non-finite value here would make the whole tool
+      // result non-lossless JSON. null = unknown (killed/unreported).
+      exitCode: Number.isFinite(result.exitCode) ? result.exitCode : null,
       stdout: result.stdout ? result.stdout.text : '',
       stderr: result.stderr ? result.stderr.text : '',
     })

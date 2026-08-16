@@ -102,14 +102,17 @@ mode's resilience: with every MSA server down (official API blocked, backup
 site abandoned, ESM Atlas 504), a manual MSA of 1557 UniProt homologs
 recovered the structure — final TM-score 0.832, RMSD 1.76 Å vs crystal.
 
-### Already fixed (verified this round, no code change)
+### Already fixed (verified this round) + one residual path hardened
 
-1. **`esmfold_predict` tool result "value is not lossless JSON".** The wasted
-   run predates v0.2.0. All 7 tools read backend JSON through the plugin's
-   two-layer sanitizer (`protein-tools.js` `readJson`: NaN/Infinity tokens at
-   text level + non-finite values at tree level), and `esmfold_predict` reads
-   its report through `readJson` (L221) — verified, no gap. The backend writes
-   PDB text only, so no `allow_nan` change applies there.
+1. **`esmfold_predict` tool result "value is not lossless JSON".** Verified
+   this round: `esmfold_predict` never parses JSON — it returns only
+   `{exitCode, stdout, stderr, pdbPath}`. The historical failure therefore
+   almost certainly came from a downstream backend JSON report
+   (`pp_interact`/`struct_eval`) in the same pipeline, already covered by the
+   v0.2.0 two-layer `readJson` sanitizer (text + tree level). The one
+   remaining theoretical path — a non-finite `exitCode` propagating through
+   `outOf` — is hardened now (`exitCode` coerced to a finite number or null),
+   protecting all 7 tools.
 
 ### Fixed this round (v0.2.1)
 

@@ -18,7 +18,7 @@
 
 ### 三、历史反馈核实
 
-4. **`esmfold_predict` "value is not lossless JSON"**:复核确认该缺陷已由 v0.2.0 的插件层双层清洗覆盖(全部 7 个工具的报告统一经 `readJson` 清洗,esmfold 走同一路径),**无需再改代码**;用户当时"白跑一次"发生在修复发布之前。
+4. **`esmfold_predict` "value is not lossless JSON"**:复核确认 esmfold 工具自身不解析任何 JSON(只返回 exitCode/stdout/stderr/pdbPath),当时报错几乎必然来自同管线中下游工具的 JSON 报告(pp_interact/struct_eval),该路径已被 v0.2.0 的双层 `readJson` 清洗覆盖。唯一残余的理论路径——非有限 `exitCode` 经 `outOf` 透传——本版一并加固(强制转有限数或 null),全部 7 个工具受益。
 
 ### 四、质量验证
 
